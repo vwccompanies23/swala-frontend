@@ -64,7 +64,7 @@ export default function VerifyPage() {
 
       const response =
         await fetch(
-          "http://127.0.0.1:3001/register",
+          `${process.env.NEXT_PUBLIC_API_URL}/register`,
           {
             method: "POST",
 
