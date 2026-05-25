@@ -53,7 +53,7 @@ export default function Chats({
 
         const response =
           await fetch(
-            `http://127.0.0.1:3001/chats/${user.id}`
+            `${process.env.NEXT_PUBLIC_API_URL}/chats/${user.id}`
           );
 
         const data =

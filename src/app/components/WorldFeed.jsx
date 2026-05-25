@@ -44,7 +44,7 @@ export default function WorldFeed({
 
         const response =
           await fetch(
-            "http://127.0.0.1:3001/world-posts"
+            `${process.env.NEXT_PUBLIC_API_URL}/world-posts`
           );
 
         /* CHECK RESPONSE */

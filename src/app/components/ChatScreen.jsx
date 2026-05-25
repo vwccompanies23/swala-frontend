@@ -76,7 +76,7 @@ export default function ChatScreen({
 
         const response =
           await fetch(
-            `http://localhost:3001/messages/${selectedChat.id}`
+            `${process.env.NEXT_PUBLIC_API_URL}/messages/${selectedChat.id}`
           );
 
         const data =

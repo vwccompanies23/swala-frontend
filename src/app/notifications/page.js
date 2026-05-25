@@ -22,7 +22,7 @@ export default function NotificationsPage() {
 
       const response =
         await fetch(
-          "http://127.0.0.1:3001/notifications/1"
+          `${process.env.NEXT_PUBLIC_API_URL}/notifications/1`
         );
 
       const data =

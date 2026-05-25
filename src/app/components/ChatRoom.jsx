@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
+import socket from "../services/socket";
 
 import MessageBubble from "./MessageBubble";
 import ChatHeader from "./ChatHeader";
@@ -23,7 +23,9 @@ import CallScreen from "./CallScreen";
 import VideoCallScreen from "./VideoCallScreen";
 import IncomingCall from "./IncomingCall";
 
-const socket = io("http://localhost:3001");
+const socket = io(
+  process.env.NEXT_PUBLIC_SOCKET_URL
+);
 
 export default function ChatRoom({
   chat,

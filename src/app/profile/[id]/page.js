@@ -82,8 +82,8 @@ export default function ProfilePage({
 
       const userResponse =
         await fetch(
-          `http://127.0.0.1:3001/user/${userId}`
-        );
+            `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}`
+           );
 
       const userData =
         await userResponse.json();
@@ -108,7 +108,7 @@ export default function ProfilePage({
 
       const postsResponse =
         await fetch(
-          `http://127.0.0.1:3001/world-posts`
+          `${process.env.NEXT_PUBLIC_API_URL}/world-posts`
         );
 
       const postsData =
@@ -142,7 +142,7 @@ export default function ProfilePage({
     try {
 
       await fetch(
-        `http://127.0.0.1:3001/update-bio/${userId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/update-bio/${userId}`,
         {
           method: "PUT",
 
@@ -207,7 +207,7 @@ async function openMessage() {
 
     const response =
       await fetch(
-        "http://127.0.0.1:3001/create-chat",
+        `${process.env.NEXT_PUBLIC_API_URL}/create-chat`,
         {
           method: "POST",
 
@@ -280,7 +280,7 @@ async function openCall() {
 
     const response =
       await fetch(
-        "http://127.0.0.1:3001/start-call",
+       `${process.env.NEXT_PUBLIC_API_URL}/start-call`,
         {
           method: "POST",
 

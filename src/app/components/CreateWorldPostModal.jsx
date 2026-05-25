@@ -165,18 +165,35 @@ export default function CreateWorldPostModal({
         expiresAt.toISOString()
       );
 
-      /* REAL USER */
+     /* REAL USER */
 
-      formData.append(
-        "user_id",
-        "1"
-      );
+const savedUser =
+  localStorage.getItem(
+    "swala_user"
+  );
+
+if (
+  !savedUser ||
+  savedUser === "undefined"
+) {
+
+  return;
+
+}
+
+const currentUser =
+  JSON.parse(savedUser);
+
+formData.append(
+  "user_id",
+  currentUser.id
+);
 
       /* API */
 
       const response =
         await fetch(
-          "http://127.0.0.1:3001/world-posts",
+          `${process.env.NEXT_PUBLIC_API_URL}/world-posts`,
           {
             method: "POST",
             body: formData,
