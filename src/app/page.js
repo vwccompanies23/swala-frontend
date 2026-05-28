@@ -384,12 +384,15 @@ export default function Home() {
 
       const data =
         await response.json();
+console.log(data);
 
-      const realGroups =
-        data.filter(
-          (chat) =>
-            chat.is_group
-        );
+const realGroups =
+  Array.isArray(data)
+    ? data.filter(
+        (chat) =>
+          chat.is_group
+      )
+    : [];
 
       setGroups(realGroups);
 

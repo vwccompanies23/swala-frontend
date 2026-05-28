@@ -42,25 +42,26 @@ export default function WorldFeed({
 
         setLoading(true);
 
+        const url =
+          `${process.env.NEXT_PUBLIC_API_URL}/world-posts`;
+
+        console.log(
+          "WORLD POSTS URL:",
+          url
+        );
+
         const response =
-          await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/world-posts`
-          );
-
-        /* CHECK RESPONSE */
-
-        if (!response.ok) {
-
-          throw new Error(
-            `Server error: ${response.status}`
-          );
-
-        }
-
-        /* PARSE JSON */
+          await fetch(url, {
+            cache: "no-store",
+          });
 
         const data =
           await response.json();
+
+        console.log(
+          "WORLD POSTS DATA:",
+          data
+        );
 
         /* MAKE SURE ARRAY */
 
@@ -73,7 +74,8 @@ export default function WorldFeed({
         } else {
 
           console.error(
-            "Invalid posts data"
+            "Invalid posts data:",
+            data
           );
 
           setPosts([]);
