@@ -63,6 +63,7 @@ export default function Chats({
 
         const data =
           await response.json();
+          console.log("CREATE CHAT RESPONSE", data);
 
         setChats(data);
 
