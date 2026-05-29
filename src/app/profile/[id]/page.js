@@ -217,11 +217,8 @@ async function openMessage() {
           },
 
           body: JSON.stringify({
-            userOne:
-              currentUser.id,
-
-            userTwo:
-              userId,
+            user1: currentUser.id,
+            user2: user.id,
           }),
         }
       );

@@ -8,6 +8,7 @@ import {
 import {
   useSearchParams,
 } from "next/navigation";
+import NewChat from "./NewChat";
 
 export default function Chats({
   openChat,
@@ -20,6 +21,10 @@ export default function Chats({
   const [loading,
     setLoading] =
     useState(true);
+
+    const [showNewChat,
+  setShowNewChat] =
+  useState(false);
 
   const searchParams =
     useSearchParams();
@@ -155,6 +160,29 @@ export default function Chats({
 
   }
 
+  function handleSelectUser(
+  user
+) {
+
+  setShowNewChat(false);
+
+  openChat({
+
+    id: user.chat_id,
+
+    name: user.username,
+
+    userId: user.id,
+
+    profilePicture:
+      user.profile_picture,
+
+    is_group: false,
+
+  });
+
+}
+
   /* LOADING */
 
   if (loading) {
@@ -173,39 +201,60 @@ export default function Chats({
 
   /* EMPTY */
 
-  if (
-    chats.length === 0
-  ) {
-
-    return (
-
-      <div className="w-full h-full flex items-center justify-center p-8">
-
-        <div className="text-center">
-
-          <h2 className="text-2xl font-bold text-white">
-
-            No Messages
-
-          </h2>
-
-          <p className="text-zinc-500 mt-3">
-
-            You do not have any chats yet.
-
-          </p>
-
-        </div>
-
-      </div>
-
-    );
-
-  }
+ if (
+  chats.length === 0
+) {
 
   return (
 
-    <div className="flex flex-col gap-3 p-4 md:p-5">
+    <div className="w-full h-full flex flex-col items-center justify-center p-8">
+
+      <div className="text-center">
+
+        <h2 className="text-2xl font-bold text-white">
+
+          No Messages
+
+        </h2>
+
+        <p className="text-zinc-500 mt-3">
+
+          Start your first conversation.
+
+        </p>
+
+      </div>
+
+      <button
+        onClick={() =>
+          setShowNewChat(true)
+        }
+        className="mt-6 bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-full"
+      >
+
+        New Chat
+
+      </button>
+
+      {showNewChat && (
+
+        <NewChat
+          onSelectUser={
+            handleSelectUser
+          }
+        />
+
+      )}
+
+    </div>
+
+  );
+
+}
+
+  return (
+
+    <div className="relative flex flex-col gap-3 p-4 md:p-5">
 
       {chats.map(
         (chat) => (
@@ -312,6 +361,37 @@ export default function Chats({
 
         )
       )}
+
+      <button
+  onClick={() =>
+    setShowNewChat(true)
+  }
+  className="
+    fixed
+    bottom-6
+    right-6
+    w-16
+    h-16
+    rounded-full
+    bg-amber-600
+    hover:bg-amber-500
+    text-3xl
+    text-white
+    shadow-lg
+  "
+>
+  +
+</button>
+
+{showNewChat && (
+
+  <NewChat
+    onSelectUser={
+      handleSelectUser
+    }
+  />
+
+)}
 
     </div>
 
