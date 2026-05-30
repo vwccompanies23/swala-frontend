@@ -23,10 +23,6 @@ import CallScreen from "./CallScreen";
 import VideoCallScreen from "./VideoCallScreen";
 import IncomingCall from "./IncomingCall";
 
-const socket = io(
-  process.env.NEXT_PUBLIC_SOCKET_URL
-);
-
 export default function ChatRoom({
   chat,
   closeChat,
@@ -154,41 +150,79 @@ const {
     useRef(null);
 
   const audioChunksRef =
-    useRef([]);
+       useRef([]);
+
+    const [messages, setMessages] =
+         useState([]);
 
   /* MESSAGES */
 
-  const [messages,
-    setMessages] =
-      useState([
+  useEffect(() => {
+
+  async function loadMessages() {
+
+    if (!chat?.id) return;
+
+    try {
+
+      const response =
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/messages/${chat.id}`
+        );
+
+      const data =
+        await response.json();
+
+     const currentUser =
+  JSON.parse(
+    localStorage.getItem(
+      "swala_user"
+    )
+  );
+
+setMessages(
+  data.map((msg) => ({
+    id: msg.id,
+
+    text: msg.message,
+
+    sender:
+      Number(msg.sender_id) ===
+      Number(currentUser.id)
+        ? "You"
+        : msg.username,
+
+    time:
+      new Date(
+        msg.created_at
+      ).toLocaleTimeString(
+        [],
         {
-          id: Date.now(),
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      ),
 
-          text:
-            "Welcome to Swala chat 🚀",
+    status: "seen",
 
-          sender: "System",
+    reactions: [],
+  }))
+);
 
-          role: "system",
+    } catch (err) {
 
-          status: "seen",
+      console.error(
+        "LOAD MESSAGES ERROR",
+        err
+      );
 
-          reactions: [],
+    }
 
-          pinned: true,
+  }
 
-          announcement: true,
+  loadMessages();
 
-          time:
-            new Date().toLocaleTimeString(
-              [],
-              {
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            ),
-        },
-      ]);
+}, [chat]);
 
   /* SOCKET */
 
@@ -637,10 +671,30 @@ const audioUrl =
 
 } else {
 
-  socket.emit(
-    "send_message",
-    newMessage
+const savedUser =
+  JSON.parse(
+    localStorage.getItem(
+      "swala_user"
+    )
   );
+
+console.log(
+  "SENDING MESSAGE",
+  {
+    chatId: chat.id,
+    senderId: savedUser?.id,
+    message: cleanMessage,
+  }
+);
+
+socket.emit(
+  "send_message",
+  {
+    chatId: chat.id,
+    senderId: savedUser.id,
+    message: cleanMessage,
+  }
+);
 
 }
 
